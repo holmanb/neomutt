@@ -114,9 +114,9 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     }
   }
 
-  if (wdata->first && (wdata->flags & MUTT_COMP_CLEAR))
+  if (wdata->flags & MUTT_COMP_CLEAR)
   {
-    wdata->first = false;
+    wdata->flags &= ~MUTT_COMP_CLEAR;
     if (IsWPrint(wc)) /* why? */
     {
       wdata->state->curpos = 0;
@@ -226,7 +226,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     // clang-format off
     struct EnterWindowData wdata = { buf, col, complete,
       multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
-      (complete & MUTT_COMP_PASS), true, 0, NULL, 0, 0, 0, false };
+      (complete & MUTT_COMP_PASS), 0, NULL, 0, 0, 0, false };
     // clang-format on
     win->wdata = &wdata;
 
@@ -319,7 +319,6 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
                    event.op);
       }
 
-      wdata.first = false;
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         wdata.tabs = 0;
       wdata.redraw = ENTER_REDRAW_LINE;
