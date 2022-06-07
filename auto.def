@@ -125,6 +125,7 @@ options {
   with-backtrace:path       => "Location of libunwind"
   debug-color=0             => "DEBUG: Enable Color dump"
   debug-email=0             => "DEBUG: Enable Email dump"
+  debug-enter=0             => "DEBUG: Enable Enter dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
@@ -152,7 +153,7 @@ foreach dep {with-ui with-slang} {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    asan autocrypt bdb coverage debug-backtrace debug-color debug-email
+    asan autocrypt bdb coverage debug-backtrace debug-color debug-email debug-enter
     debug-graphviz debug-notify debug-parse-test debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
@@ -1214,6 +1215,11 @@ if {[get-define want-debug-color]} {
 # Email dump
 if {[get-define want-debug-email]} {
   define USE_DEBUG_EMAIL 1
+}
+
+# Enter dump
+if {[get-define want-debug-enter]} {
+  define USE_DEBUG_ENTER 1
 }
 
 # Graphviz dump
