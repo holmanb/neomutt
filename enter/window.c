@@ -195,6 +195,8 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   int col = 0;
 
   struct EnterState *state = enter_state_new();
+  struct Notify *notify = enter_state_get_notify(state);
+  notify_set_parent(notify, NeoMutt->notify);
 
   const struct Mapping *old_help = win->help_data;
   int old_menu = win->help_menu;
