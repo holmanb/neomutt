@@ -127,17 +127,17 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
   if ((wc == '\r') || (wc == '\n'))
   {
     /* Convert from wide characters */
-    mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->lastchar);
+    mutt_mb_wcstombs(wdata->state->wbuf, wdata->state->lastchar, wdata->buf);
     if (!wdata->pass)
-      mutt_hist_add(wdata->hclass, wdata->buf, true);
+      mutt_hist_add(wdata->hclass, mutt_buffer_string(wdata->buf), true);
 
     if (wdata->multiple)
     {
       char **tfiles = NULL;
       *wdata->numfiles = 1;
       tfiles = mutt_mem_calloc(*wdata->numfiles, sizeof(char *));
-      mutt_expand_path(wdata->buf, wdata->buflen);
-      tfiles[0] = mutt_str_dup(wdata->buf);
+      mutt_buffer_expand_path_regex(wdata->buf, false);
+      tfiles[0] = mutt_buffer_strdup(wdata->buf);
       *wdata->files = tfiles;
     }
     return true;
@@ -225,7 +225,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     mbstate_t mbstate = { 0 };
 
     // clang-format off
-    struct EnterWindowData wdata = { buf->data, buf->dsize, col, complete,
+    struct EnterWindowData wdata = { buf, col, complete,
       multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
       (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false };
     // clang-format on
@@ -233,8 +233,8 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
     /* Initialise wbuf from buf */
     wdata.state->wbuflen = 0;
-    wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
-                                             &wdata.state->wbuflen, 0, wdata.buf);
+    wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf, &wdata.state->wbuflen,
+                                             0, mutt_buffer_string(wdata.buf));
     wdata.redraw = ENTER_REDRAW_INIT;
 
     if (wdata.flags & MUTT_COMP_FILE)

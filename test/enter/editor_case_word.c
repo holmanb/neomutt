@@ -53,10 +53,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "Test string"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "Test string"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -69,10 +70,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "Test string"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "Test string"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -85,10 +87,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "TEST string"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "TEST string"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -102,10 +105,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test stRING"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "test stRING"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -119,10 +123,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 19);
     TEST_CHECK(editor_buffer_get_cursor(es) == 15);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test     STRING    "));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "test     STRING    "));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -135,10 +140,11 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "TEST string"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "TEST string"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 
   {
@@ -151,9 +157,10 @@ void test_editor_case_word(void)
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
 
-    char buf[64];
-    mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test STRING"));
+    struct Buffer *buf = mutt_buffer_pool_get();
+    mutt_mb_wcstombs(es->wbuf, es->lastchar, buf);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(buf), "test STRING"));
     enter_state_free(&es);
+    mutt_buffer_pool_release(&buf);
   }
 }

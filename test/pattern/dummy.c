@@ -301,6 +301,10 @@ int mutt_complete(char *buf, size_t buflen)
   return 0;
 }
 
+void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
+{
+}
+
 char *mutt_expand_path(char *buf, size_t buflen)
 {
   return NULL;
